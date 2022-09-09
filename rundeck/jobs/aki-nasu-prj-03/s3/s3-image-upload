@@ -1,0 +1,53 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: s3
+  loglevel: INFO
+  name: s3-image-upload
+  nodeFilterEditable: false
+  options:
+  - hidden: true
+    label: リージョン
+    name: region
+    required: true
+    value: jp-west-3
+  - hidden: true
+    label: イメージの格納先バケット名
+    name: bucket-name
+    required: true
+    value: appli-automation-bucket
+  - hidden: true
+    label: S3テナントユーザーのアクセスキー
+    name: access-key
+    required: true
+    secure: true
+    storagePath: keys/project/aki-nasu-prj-03/iaas/jp-west-3/s3/access-key
+    valueExposed: true
+  - hidden: true
+    label: S3テナントユーザーのシークレットキー
+    name: secret-key
+    required: true
+    secure: true
+    storagePath: keys/project/aki-nasu-prj-03/iaas/jp-west-3/s3/secret-key
+    valueExposed: true
+  - description: "アップロードファイルのローカルディレクトリのフルパス(ファイル名含む)  \nイメージの場合、/mnt/share/images/xxx.iso"
+    label: アップロードファイルのローカルフルパス
+    name: upload_file_path
+    required: true
+  - description: "アップロードするファイル名を記載する  \nイメージの場合、xxx.isoのように入力する  \nオブジェクトストレージに格納す\
+      る際の名称になる（基本的にはローカルと同じファイル名にする）"
+    label: アップロードファイル名
+    name: upload_file_name
+    required: true
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - args: ${option.region} ${option.bucket-name} ${option.access-key} ${option.secret-key}
+        ${option.upload_file_path} ${option.upload_file_name}
+      description: s3-upload
+      scriptfile: ${globals.script-source}/s3_file_upload.sh
+    keepgoing: false
+    strategy: node-first
+

@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: 親ジョブ
+  executionEnabled: true
+  group: parent
+  loglevel: INFO
+  name: parent
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: localhost '
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: node step
+      jobref:
+        group: child
+        name: child-job
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+        useName: 'true'
+        uuid: 235a5e80-fda1-4103-8681-b1cce9cbdb37
+    keepgoing: false
+    strategy: node-first
+

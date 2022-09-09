@@ -1,0 +1,32 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: nortification
+  loglevel: INFO
+  name: slack
+  nodeFilterEditable: false
+  notification:
+    onsuccess:
+      plugin:
+        configuration:
+          slack_channel: '#tech'
+          webhook_base_url: https://hooks.slack.com/services
+          webhook_token: TTWTS8U8N/B03U2QGNZ40/5k14X9wKM8MZSQX4lOfPaK3K
+        type: SlackNotification
+  notifyAvgDurationThreshold: null
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - exec: 'echo ''{"channel": "#tech",  "username": "webhookbot",  "text": "これは
+        webhookbot",   "icon_emoji": ":ghost:"}'''
+    - configuration:
+        data: "{\"channel\": \"#tech\",\n \"username\": \"webhookbot\",\n \"text\"\
+          : \"これは webhookbot\", \n \"icon_emoji\": \":ghost:\"}"
+        format: json
+      nodeStep: true
+      type: stub-node-step
+    keepgoing: false
+    strategy: node-first
+
