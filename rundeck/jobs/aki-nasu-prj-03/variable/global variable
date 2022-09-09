@@ -1,0 +1,17 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: variable
+  loglevel: INFO
+  name: global variable
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - exec: set
+    - exec: echo ${globals.script-source}; echo ${RD_GLOBALS_SCRIPT_SOURCE}
+    keepgoing: false
+    strategy: node-first
+

@@ -1,0 +1,41 @@
+- defaultTab: nodes
+  description: 親ジョブ
+  executionEnabled: true
+  loglevel: INFO
+  name: main-job
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - jobref:
+        args: -child_opt1 parent_val1 -child_opt2 parent_val2
+        group: child
+        importOptions: true
+        name: child-job1
+        useName: 'true'
+        uuid: c1ab7ebe-3485-4cef-af60-83a1e0f73599
+    - exec: echo ${data.child_key}
+      plugins:
+        LogFilter: []
+    - exec: cat /home/share/temp.txt
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'false'
+            regex: '^(.+?)\s*,\s*(.+)'
+          type: key-value-data-multilines
+    - exec: echo -n ${data.parent_key}
+    keepgoing: false
+    pluginConfig:
+      LogFilter:
+      - config:
+          invalidKeyPattern: \s|\$|\{|\}|\\
+          logData: 'false'
+          regex: ^RUNDECK:DATA:\s*([^\s]+?)\s*=\s*(.+)$
+        type: key-value-data
+    strategy: node-first
+

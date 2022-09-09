@@ -1,0 +1,31 @@
+- defaultTab: nodes
+  description: 子ジョブ
+  executionEnabled: true
+  group: child
+  loglevel: INFO
+  name: child-job1
+  nodeFilterEditable: false
+  options:
+  - name: child_opt1
+    value: child
+  - name: child_opt2
+    value: child2
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - exec: echo "RUNDECK:DATA:child_key=child_value"
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'false'
+            regex: ^RUNDECK:DATA:\s*([^\s]+?)\s*=\s*(.+)$
+          type: key-value-data
+    - exec: echo ${data.child_key}
+    - exec: 'echo "parent_key,"${data.child_key} > /home/share/temp.txt'
+    - exec: echo ${option.child_opt1} ${option.child_opt2}
+    keepgoing: false
+    strategy: node-first
+
